@@ -7,7 +7,7 @@
 // 'emission.controllers' is found in controllers.js
 'use strict';
 
-angular.module('emission', ['ionic',
+angular.module('emission', ['ionic', 'react',
     'emission.controllers','emission.services', 'emission.plugin.logger',
     'emission.splash.customURLScheme', 'emission.splash.referral',
     'emission.splash.updatecheck', 'emission.services.email',
@@ -70,6 +70,10 @@ angular.module('emission', ['ionic',
     cordova.plugin.http.setDataSerializer('json');
   });
   console.log("Ending run");
+})
+
+.directive('tutorial', function (reactDirective) {
+  return reactDirective(TutorialComponent);
 })
 
 .config(function($stateProvider, $urlRouterProvider, $translateProvider, $compileProvider) {

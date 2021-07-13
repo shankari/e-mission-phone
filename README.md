@@ -40,6 +40,12 @@ $ cp ..... www/json/connectionConfig.json
 ```
 $ source setup/activate_serve.sh
 ```
+
+### (Temporary) Every time the react component is changed
+
+```
+$ npm run compile-react
+```
   
 ### Running
 

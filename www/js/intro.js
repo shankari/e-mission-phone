@@ -59,6 +59,7 @@ angular.module('emission.intro', ['emission.splash.startprefs',
   var allIntroFiles = Promise.all([
     i18nUtils.geti18nFileName("templates/", "intro/summary", ".html"),
     i18nUtils.geti18nFileName("templates/", "intro/consent", ".html"),
+    i18nUtils.geti18nFileName("templates/", "intro/survey", ".html"),
     i18nUtils.geti18nFileName("templates/", "intro/sensor_explanation", ".html"),
     i18nUtils.geti18nFileName("templates/", "intro/login", ".html")
   ]);
@@ -67,8 +68,9 @@ angular.module('emission.intro', ['emission.splash.startprefs',
       console.log("intro files are "+allIntroFilePaths);
       $scope.summaryFile = allIntroFilePaths[0];
       $scope.consentFile = allIntroFilePaths[1];
-      $scope.explainFile = allIntroFilePaths[2];
-      $scope.loginFile = allIntroFilePaths[3];
+      $scope.surveyFile = allIntroFilePaths[2];
+      $scope.explainFile = allIntroFilePaths[3];
+      $scope.loginFile = allIntroFilePaths[4];
     });
   });
 
