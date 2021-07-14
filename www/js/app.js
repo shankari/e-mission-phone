@@ -72,6 +72,10 @@ angular.module('emission', ['ionic', 'react',
   console.log("Ending run");
 })
 
+.controller('mainCtrl', function ($scope) {
+  $scope.surveyState = { isValid: False; result : {} };
+})
+
 .directive('tutorial', function (reactDirective) {
   return reactDirective(TutorialComponent);
 })

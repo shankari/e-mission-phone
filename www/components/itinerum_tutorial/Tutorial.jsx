@@ -1,6 +1,16 @@
 /*
  * src/app/help-panel/Tutorial.jsx
  */
+var TutorialComponent = React.createClass( {
+  propTypes: {
+    isValid: React.PropTypes.bool,
+    result: React.PropTypes.list #what data type is this?
+  },
+
+  render: function() {
+    return; #not sure what we would need to return here?
+  }
+} );
 
 class TutorialComponent extends React.Component {
     render() {
