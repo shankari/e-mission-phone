@@ -1,21 +1,28 @@
 /*
  * src/app/help-panel/Tutorial.jsx
  */
-var TutorialComponent = React.createClass( {
-  propTypes: {
-    isValid: React.PropTypes.bool,
-    result: React.PropTypes.list #what data type is this?
-  },
-
-  render: function() {
-    return; #not sure what we would need to return here?
-  }
-} );
-
 class TutorialComponent extends React.Component {
+    propTypes: {
+        test: React.PropTypes.string,
+        isValid: React.PropTypes.bool,
+        schema: React.PropTypes.object,
+        result: React.PropTypes.object
+    }
     render() {
+        bool = this.props.isValid;
+        if(bool) {
+            validity = <p>Valid</p>
+        } else {
+            validity = <p>Not Valid</p>
+        }
         return(
                 <div className="content-wrapper">
+                    <div>
+                        {validity}
+                        This is the test -> {this.props.test}
+                        {this.props.schema}
+                        {this.props.result}
+                    </div>
                     <div className="row">
                         {/* bootstrap grid as margin */}
                         <div className="col-xs-2" />
