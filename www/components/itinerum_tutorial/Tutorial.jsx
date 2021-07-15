@@ -9,19 +9,10 @@ class TutorialComponent extends React.Component {
         result: React.PropTypes.object
     }
     render() {
-        bool = this.props.isValid;
-        if(bool) {
-            validity = <p>Valid</p>
-        } else {
-            validity = <p>Not Valid</p>
-        }
         return(
                 <div className="content-wrapper">
                     <div>
-                        {validity}
                         This is the test -> {this.props.test}
-                        {this.props.schema}
-                        {this.props.result}
                     </div>
                     <div className="row">
                         {/* bootstrap grid as margin */}
