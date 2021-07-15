@@ -3,7 +3,6 @@
  */
 class TutorialComponent extends React.Component {
     propTypes: {
-        test: React.PropTypes.string,
         isValid: React.PropTypes.bool,
         schema: React.PropTypes.object,
         result: React.PropTypes.object
@@ -12,7 +11,8 @@ class TutorialComponent extends React.Component {
         return(
                 <div className="content-wrapper">
                     <div>
-                        This is the test -> {this.props.test}
+                        This is the first name -> {this.props.schema.fname}
+                        This is the last name -> {this.props.schema.lname}
                     </div>
                     <div className="row">
                         {/* bootstrap grid as margin */}

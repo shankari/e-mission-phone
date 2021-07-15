@@ -23,7 +23,11 @@ angular.module('emission.intro', ['emission.splash.startprefs',
 .controller('IntroCtrl', function($scope, $state, $window, $ionicSlideBoxDelegate,
     $ionicPopup, $ionicHistory, ionicToast, $timeout, CommHelper, StartPrefs, UpdateCheck, $translate, i18nUtils) {
 
-  $scope.surveyState = { test: 'test', isValid: true, schema: {}, result: {} };
+  $scope.surveyState = { 
+    isValid: true, 
+    schema: {'fname':'Jenna', 'lname':'Ruzekowicz'},
+    result: {} 
+  };
   $scope.platform = $window.device.platform;
   $scope.osver = $window.device.version.split(".")[0];
   if($scope.platform.toLowerCase() == "android") {
