@@ -3,16 +3,14 @@
  */
 class TutorialComponent extends React.Component {
     propTypes: {
-        isValid: React.PropTypes.bool,
-        schema: React.PropTypes.object,
-        result: React.PropTypes.object
+        surveyState: React.PropTypes.object,
     }
     render() {
         return(
                 <div className="content-wrapper">
                     <div>
-                        This is the first name -> {this.props.schema.fname}
-                        This is the last name -> {this.props.schema.lname}
+                        This is the first name -> {this.props.surveyState.schema.fname}
+                        This is the last name -> {this.props.surveyState.schema.lname}
                     </div>
                     <div className="row">
                         {/* bootstrap grid as margin */}
