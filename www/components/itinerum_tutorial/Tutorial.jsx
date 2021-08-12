@@ -1,11 +1,49 @@
 /*
  * src/app/help-panel/Tutorial.jsx
  */
-
 class TutorialComponent extends React.Component {
+    propTypes: {
+        isValid: React.PropTypes.bool,
+        result: React.PropTypes.object,
+        schema: React.PropTypes.object,
+        changeresult: React.PropTypes.func
+    }
+    constructor(props) {
+      super(props);
+      this.state = {
+        result: {
+          start_ts: this.props.result.start_ts,
+          end_ts: this.props.schema.end_ts,
+          fname: this.props.schema.fname,
+          lname: this.props.schema.lname
+        }
+      };
+      this.handlefnameChange = this.handlefnameChange.bind(this);
+      this.handlelnameChange = this.handlelnameChange.bind(this);
+    }
+    handlefnameChange(event) {
+      newresult = this.state.result
+      newresult.fname = event.target.value
+      this.setState(newresult)
+      this.props.changeresult(this.state.result)
+    }
+    handlelnameChange(event) {
+      newresult = this.state.result
+      newresult.lname = event.target.value
+      this.setState(newresult)
+      this.props.changeresult(this.state.result)
+    }
     render() {
         return(
                 <div className="content-wrapper">
+                    <div>
+                        First Name -> {this.state.result.fname}
+                        Last Name -> {this.state.result.lname}
+                    </div>
+                    <div>
+                    <input type="text" value={this.state.result.fname} onChange={this.handlefnameChange} />
+                    <input type="text" value={this.state.result.lname} onChange={this.handlelnameChange} />
+                    </div>
                     <div className="row">
                         {/* bootstrap grid as margin */}
                         <div className="col-xs-2" />

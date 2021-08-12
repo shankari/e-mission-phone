@@ -1,8 +1,11 @@
 <ion-content class="has-footer">
-    <tutorial/>
+  <tutorial isValid="surveyState.isValid" result="surveyState.result" schema="surveyState.schema" changeresult="changeresult"/>
 </ion-content>
 <ion-footer-bar class="no-bgColor" id="intro-footer">
-  <button class="button button-block button-outline button-positive" ng-click="next()">
+  <div> First name-> {{surveyState.result.fname}} </div>
+  <div> Last name -> {{surveyState.result.lname}} </div>
+  <div> New Survey State -> {{surveyState.schema.data.status}} </div>
+  <button class="button button-block button-outline button-positive" ng-click="save_survey()">
     SUBMIT
   </button>
 </ion-footer-bar>

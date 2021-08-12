@@ -21,7 +21,16 @@ angular.module('emission.intro', ['emission.splash.startprefs',
 })
 
 .controller('IntroCtrl', function($scope, $state, $window, $ionicSlideBoxDelegate,
-    $ionicPopup, $ionicHistory, ionicToast, $timeout, CommHelper, StartPrefs, UpdateCheck, $translate, i18nUtils) {
+    $ionicPopup, $ionicHistory, ionicToast, $timeout, CommHelper, StartPrefs, UpdateCheck, $translate, i18nUtils, $http) {
+
+  $scope.surveyState = { 
+    isValid: true, 
+    schema: {'start_ts':'', 'end_ts':'', 'fname':'Jenna', 'lname':'Ruzekowicz'},
+    result: {'start_ts':'', 'end_ts':'', 'fname':'', 'lname':''} 
+  };
+  $scope.changeresult = function(value) {
+      $scope.surveyState.result = value
+  };
 
   $scope.platform = $window.device.platform;
   $scope.osver = $window.device.version.split(".")[0];
@@ -59,18 +68,18 @@ angular.module('emission.intro', ['emission.splash.startprefs',
   var allIntroFiles = Promise.all([
     i18nUtils.geti18nFileName("templates/", "intro/summary", ".html"),
     i18nUtils.geti18nFileName("templates/", "intro/consent", ".html"),
-    i18nUtils.geti18nFileName("templates/", "intro/survey", ".html"),
     i18nUtils.geti18nFileName("templates/", "intro/sensor_explanation", ".html"),
-    i18nUtils.geti18nFileName("templates/", "intro/login", ".html")
+    i18nUtils.geti18nFileName("templates/", "intro/login", ".html"),
+    i18nUtils.geti18nFileName("templates/", "intro/survey", ".html")
   ]);
   allIntroFiles.then(function(allIntroFilePaths) {
     $scope.$apply(function() {
       console.log("intro files are "+allIntroFilePaths);
       $scope.summaryFile = allIntroFilePaths[0];
       $scope.consentFile = allIntroFilePaths[1];
-      $scope.surveyFile = allIntroFilePaths[2];
-      $scope.explainFile = allIntroFilePaths[3];
-      $scope.loginFile = allIntroFilePaths[4];
+      $scope.explainFile = allIntroFilePaths[2];
+      $scope.loginFile = allIntroFilePaths[3];
+      $scope.surveyFile = allIntroFilePaths[4];
     });
   });
 
@@ -100,6 +109,47 @@ angular.module('emission.intro', ['emission.splash.startprefs',
 
   $scope.disagree = function() {
     $state.go('root.main.heatmap');
+  };
+
+  $scope.fetchItinerumSurvey = function(url) {
+    (async () => {
+     let uuid="";
+     var step1 = new Promise(function(resolve, reject) {
+       resolve(CommHelper.getUser());
+     });
+     var step2 = step1.then(function(value){
+       uuid=value.user_id['$uuid'];
+     });
+     await step2;
+     var data_dict = {
+        'user': {
+          'uuid': uuid,
+          'model': $window.device.model,
+          'itinerumVersion': '99c',
+          'os': ionic.Platform.platform(),
+          'osVersion': $window.device.version,
+        },
+        'surveyName': 'test'
+      };
+      console.log(data_dict);
+      const options = {
+        method: 'post',
+        data: data_dict,
+        responseType: 'json'
+      }
+      cordova.plugin.http.sendRequest(url, options,
+      function(response) {
+        $scope.$apply(function() {
+          $scope.surveyState.schema = response;
+        });
+    }, function(error) {
+        console.log(error);
+      });
+   })();
+    $scope.$apply(function() {
+      $scope.surveyState.result.start_ts = new Date().getTime() / 1000;
+    });
+    console.log($scope.surveyState.result.start_ts);
   };
 
   $scope.agree = function() {
@@ -147,10 +197,12 @@ angular.module('emission.intro', ['emission.splash.startprefs',
              client: retVal
             });
           });
-          $scope.finish();
+          $scope.next();
         }, function(errorResult) {
           $scope.alertError('User registration error', errorResult);
         });
+        var url = 'http://198.245.50.61/mobile/v2/create';
+        $scope.fetchItinerumSurvey(url);
       }
     }, function(error) {
         $scope.alertError('Sign in error', error);
@@ -173,12 +225,23 @@ angular.module('emission.intro', ['emission.splash.startprefs',
         $scope.getIntroBox().enableSlide(false);
     }
   };
+  
+  $scope.save_survey = function() {
+    $scope.surveyState.result.end_ts = new Date().getTime() / 1000;
+    $window.cordova.plugins.BEMUserCache.putMessage("manual/survey_response", $scope.surveyState.result);
+    $scope.finish();
+  };
 
+  $scope.end_ts = function() {
+    $scope.$apply(function() {
+      $scope.surveyState.result.end_ts = new Date().getTime() / 1000;
+    });
+  }
   $scope.finish = function() {
     // this is not a promise, so we don't need to use .then
+    console.log($scope.surveyState.result);
     StartPrefs.markIntroDone();
     $scope.getIntroBox().slide(0);
     StartPrefs.loadPreferredScreen();
   }
 });
-
